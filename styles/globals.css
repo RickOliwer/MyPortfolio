@@ -39,3 +39,59 @@ p, a{
 a{
     text-decoration: none;
 }
+
+.burger div{
+    background: #3f3f3f;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hero{
+    height: 72vh;
+}
+
+.burger__animation .item1{
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.burger__animation .item2{
+    opacity: 0;
+}
+
+.burger__animation .item3{
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+@media screen and (max-width: 768px) {
+
+    body{
+        overflow-x: hidden;
+    }
+    .link__container{
+        position: absolute;
+        right: 0px;
+        height: 92vh;
+        top: 8vh;
+        background-color: #f2f2f2;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center;
+        justify-content: space-around !important;
+        width: 70%;
+        transform: translateX(125%);
+        transition: transform 0.5s ease-in;
+        z-index: 1;
+
+    }
+}
+
+.link__container_active{
+    display: block;
+    transform: translateX(30%);
+
+}
+
+.hover__text:hover{
+    color: #f2f2f2 !important;
+
+}

@@ -1,8 +1,17 @@
+import Head from 'next/head'
+
+
 const Portfolio = () => {
     return (
-        <div>
-            <h1>Hello Portfolio</h1>
-        </div>
+        <>
+            <Head>
+                <title>Rick | Portfolio</title>
+                <meta name="keywords" content="rick"/>
+            </Head>
+            <div>
+                <h1>Hello Portfolio</h1>
+            </div>
+        </>
     );
 }
 
