@@ -1,11 +1,13 @@
 import Head from 'next/head'
-import { Client } from '../lib/client';
-import { gql } from '@apollo/client';
+import Fetcher from '../lib/fetcher';
+
+import { ALL_POSTS } from '../lib/wordpress/api';
+
 import Post from '../components/post';
 
 
-export default function Home({posts}) {
-  console.log(posts);
+export default function Home({allPosts}) {
+  const posts = allPosts;
   
   return (
     <>
@@ -23,7 +25,6 @@ export default function Home({posts}) {
               <div className="flex flex-wrap m-2">
                 {
                   posts.map(({node:post}) => {
-                    console.log(post);
                     return <Post {...post}/>
                   })
                 }
@@ -34,38 +35,13 @@ export default function Home({posts}) {
   )
 }
 
-export const getStaticProps = async() => {
-try {
-  const response = await Client.query({
-    query:gql`
-    query GetAllPosts {
-      posts {
-        edges {
-          node {
-            title
-            content
-            excerpt
-            featuredImage {
-              node {
-                mediaItemUrl
-              }
-            }
-          }
-        }
-      }
-    }`
-  })
+export async function getStaticProps(){
+  const response = await Fetcher.query({query: ALL_POSTS})
+  const allPosts = response.data.posts.edges;
+
   return {
-    props:{
-      posts:response.data.posts.edges
-
-    }
+    props: { allPosts },
+    revalidate: 1,
   }
-  console.log(response); 
-} catch(error){
-
-  console.log(error);
-}
-  
 }
 
