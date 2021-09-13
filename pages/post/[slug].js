@@ -1,18 +1,21 @@
-import Fetcher from '../../lib/fetcher';
-import{GET_ALL_POSTS_WITH_SLUG, POST_BY_SLUG} from '../../lib/wordpress/api';
+import Client from '../../lib/client';
+import{GET_ALL_POSTS, GET_POST_BY_SLUG} from '../../lib/wordpress/api';
 import {useRouter} from 'next/router';
+import Hero from '../../components/hero'
+import parse from 'html-react-parser'
 
-const Post = ({postData}) => {
-    const blogPost = postData.data;
-    // const router = useRouter;
-    // if(!router.isFallback && !blogPost?.slug){
-    //     return <ErrorPage status={404}/>
-    // }
+const Post = ({post}) => {
+  //const blocks = JSON.parse(post?.blocksJSON)
+ 
     return (
         <div>
-
-            <h1>{blogPost.title}</h1>
-
+        
+        <Hero {...post}/>
+        <main className="w-4/5 m-auto main-content">
+          {post.date && (<p>{post.date}</p>)}
+          {post.excerpt && (<div className="my-5 excerpt">{parse(post.excerpt)}</div>)}
+          {post.content && (<div>{parse(post.content)}</div>)}
+        </main>
         </div>
     );
 }
@@ -21,35 +24,35 @@ export default Post;
 
 export async function getStaticPaths() {
 
-    const response = await Fetcher.query({query: GET_ALL_POSTS_WITH_SLUG})
-    const allPosts = response.data.posts.edges;
-    console.log(allPosts)
-    const paths = allPosts.map(({node:post}) => {
-        return {
-            params: {
-                slug: post.slug
-            }
-        }
+    const response = await Client.query({query: GET_ALL_POSTS})
+   console.log("data", response);
+    const paths = response.data.posts.edges.map((edge) => {
+      const node = edge.node
+      const post = node
+      console.log("edge", edge);
+      return {
+        params: {slug: post.slug}
+      }
     })
-    console.log(paths)
-    return {
-        paths: paths,
-        fallback: false,
-    }
-
+    console.log("paths", paths);
+      return {
+        paths,
+        fallback: false
+      }
 }
 
 export async function getStaticProps({params}) {
-    const variables = {
-        slug: params.slug,
-        post:"SLUG",
-        
-    }
 
-    const data = await Fetcher.query({query: POST_BY_SLUG, variables});
-    return{
+    const {data} = await Client.query({
+        query: GET_POST_BY_SLUG,
+        variables: {slug: params.slug}
+    })
+    console.log("new data", data);
+    
+      return {
         props: {
-            postData: data,
-        }
-    };
+          post: data?.postBy
+        },
+        revalidate: 300
+      }
 }

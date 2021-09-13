@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Fetcher from '../lib/fetcher';
+import Client from '../lib/client';
 
 import { ALL_POSTS } from '../lib/wordpress/api';
 
@@ -16,7 +16,7 @@ export default function Home({allPosts}) {
         <meta name="keywords" content="rick"/>
       </Head>
           <section className="flex items-center md:h-full">
-            <div class="container px-5 py-24 mx-auto">
+            <div className="container px-5 py-24 mx-auto">
 
               <div className=" sm:w-1/2 lg:w-1/3">
                 <h1 className="m-2">Hello Home</h1>
@@ -36,7 +36,7 @@ export default function Home({allPosts}) {
 }
 
 export async function getStaticProps(){
-  const response = await Fetcher.query({query: ALL_POSTS})
+  const response = await Client.query({query: ALL_POSTS})
   const allPosts = response.data.posts.edges;
 
   return {

@@ -4,6 +4,10 @@ body{
     background: #f2f2f2;
 }
 
+.white{
+    color: #f2f2f2;
+}
+
 h1, h2, h3, h4, h5, h6{
     font-family: 'Jost', sans-serif;
     font-weight: 700;
@@ -94,4 +98,8 @@ a{
 .hover__text:hover{
     color: #f2f2f2 !important;
 
+}
+.excerpt p{
+    font-weight: 600;
+    font-size: 16px;
 }

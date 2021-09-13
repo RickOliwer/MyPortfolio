@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react';
-import { GET_MENUS } from '../lib/wordpress/get-menu';
-import Client from '../lib/client';
 
-const NavBar = (props, {menus}) => {
+
+const NavBar = (props, {HeaderMenus}) => {
     const [isOpen, setIsOpen] = useState(false)
     console.warn('menus', menus);
+    if(isEmpty(HeaderMenus)){
+        return null;
+    }
     return (
         <nav className="w-full shadow-sm">
 
